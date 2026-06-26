@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommandPaletteComponent } from './command-palette/command-palette.component';
+import { AuthService } from '../../core/services/auth.service';
 
 interface NavigationItem {
   label: string;
@@ -19,7 +20,9 @@ interface NavigationItem {
 export class LayoutComponent {
   protected readonly isSidebarCollapsed = signal<boolean>(false);
   protected readonly isCommandPaletteOpen = signal<boolean>(false);
-  protected readonly userName = signal<string>('Marcus');
+  
+  // Dynamically computed username from authenticated user session
+  protected readonly userName = computed(() => this.authService.currentUser()?.username || 'Guest');
 
   // Sidebar navigation menu
   protected readonly navItems = signal<NavigationItem[]>([
@@ -45,13 +48,19 @@ export class LayoutComponent {
     }
   ]);
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) {}
 
   protected toggleSidebar(): void {
     this.isSidebarCollapsed.set(!this.isSidebarCollapsed());
   }
 
   protected handleSignOut(): void {
+    // Clear user token and session
+    this.authService.logout();
+
     // Navigate back to the public landing page on sign-out
     this.router.navigate(['/']).catch((err) => {
       console.error('Sign out navigation failed', err);

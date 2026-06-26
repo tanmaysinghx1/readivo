@@ -2,6 +2,8 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,11 @@ export class LoginComponent {
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly isLoading = signal<boolean>(false);
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly toastService: ToastService
+  ) {}
 
   protected togglePasswordVisibility(): void {
     this.showPassword.set(!this.showPassword());
@@ -35,10 +41,9 @@ export class LoginComponent {
       return;
     }
 
-    // Basic email pattern validation
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(emailVal)) {
-      this.errorMessage.set('Please enter a valid email address.');
+    // Basic email or username check (allow username or email logging in)
+    if (emailVal.length < 3) {
+      this.errorMessage.set('Username or email must be at least 3 characters.');
       return;
     }
 
@@ -49,14 +54,22 @@ export class LoginComponent {
 
     this.isLoading.set(true);
 
-    // Simulate backend JWT authentication delay
-    setTimeout(() => {
-      this.isLoading.set(false);
-      // In a real application, we would store the JWT token and update the auth state
-      this.router.navigate(['/library']).catch((err) => {
-        console.error('Navigation failed', err);
-        this.errorMessage.set('Navigation failed. Please try again.');
-      });
-    }, 1200);
+    this.authService.login(emailVal, passwordVal).subscribe({
+      next: (res) => {
+        this.isLoading.set(false);
+        this.toastService.success(`Welcome back, ${res.username || 'reader'}!`);
+        this.router.navigate(['/library']).catch((err) => {
+          console.error('Navigation failed', err);
+          this.errorMessage.set('Navigation failed. Please try again.');
+        });
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        console.error('Login error', err);
+        const errorMsg = err.error?.message || 'Invalid username or password. Please try again.';
+        this.errorMessage.set(errorMsg);
+        this.toastService.error(errorMsg);
+      }
+    });
   }
 }
