@@ -1,0 +1,447 @@
+<div 
+  class="min-h-screen relative w-full transition-colors duration-350 ease-in-out selection:bg-amber-200/60 selection:text-amber-950"
+  [ngClass]="{
+    'bg-stone-50 text-stone-900': theme() === 'light',
+    'bg-sepia-50 text-sepia-900': theme() === 'sepia',
+    'bg-slate-950 text-slate-100': theme() === 'dark'
+  }"
+>
+  
+  <!-- Floating Distraction-Free Header (Hides/Shows dynamically) -->
+  <header 
+    class="fixed top-0 left-0 right-0 h-16 border-b z-40 flex items-center justify-between px-6 transition-all duration-300 shadow-sm"
+    [ngClass]="{
+      'translate-y-0 opacity-100 pointer-events-auto': isHeaderVisible(),
+      '-translate-y-full opacity-0 pointer-events-none': !isHeaderVisible(),
+      'bg-white/90 border-stone-200/60 text-stone-800 backdrop-blur-md': theme() === 'light',
+      'bg-sepia-100/90 border-sepia-200/50 text-sepia-950 backdrop-blur-md': theme() === 'sepia',
+      'bg-slate-950/90 border-slate-900/65 text-slate-200 backdrop-blur-md': theme() === 'dark'
+    }"
+  >
+    <!-- Left side: return button & category -->
+    <div class="flex items-center gap-3">
+      <a 
+        routerLink="/library" 
+        class="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-current"
+        title="Return to Library"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+        </svg>
+      </a>
+      <span class="text-xs font-bold uppercase tracking-wider opacity-60 hidden sm:inline-block">
+        {{ book()?.category }}
+      </span>
+    </div>
+
+    <!-- Center: Book details -->
+    <div class="text-center">
+      <h1 class="text-sm font-bold tracking-tight truncate max-w-[180px] sm:max-w-xs">{{ book()?.title }}</h1>
+      <p class="text-[10px] opacity-60 font-medium mt-0.5">By {{ book()?.author }}</p>
+    </div>
+
+    <!-- Right Side: Font Size, Theme, and Drawer Toggles -->
+    <div class="flex items-center gap-3.5">
+      <!-- Theme Switcher (Mini dropdown wrapper) -->
+      <div class="flex items-center bg-black/5 dark:bg-white/5 p-0.5 rounded-lg border border-current/10">
+        <button 
+          (click)="theme.set('light')" 
+          class="h-7 px-2 text-[10px] font-bold rounded transition-all"
+          [ngClass]="theme() === 'light' ? 'bg-white text-stone-950 shadow-sm' : 'opacity-65 text-current'"
+        >
+          L
+        </button>
+        <button 
+          (click)="theme.set('sepia')" 
+          class="h-7 px-2 text-[10px] font-bold rounded transition-all"
+          [ngClass]="theme() === 'sepia' ? 'bg-sepia-200 text-sepia-905 shadow-sm' : 'opacity-65 text-current'"
+        >
+          S
+        </button>
+        <button 
+          (click)="theme.set('dark')" 
+          class="h-7 px-2 text-[10px] font-bold rounded transition-all"
+          [ngClass]="theme() === 'dark' ? 'bg-slate-800 text-slate-100 shadow-sm' : 'opacity-65 text-current'"
+        >
+          D
+        </button>
+      </div>
+
+      <!-- Font size toggles -->
+      <div class="hidden sm:flex items-center border border-current/10 bg-black/5 dark:bg-white/5 rounded-lg p-0.5">
+        <button 
+          (click)="adjustFontSize(-15)" 
+          class="h-7 w-7 flex items-center justify-center text-xs font-bold opacity-75 hover:opacity-100"
+          title="Smaller Text"
+        >
+          A-
+        </button>
+        <button 
+          (click)="adjustFontSize(15)" 
+          class="h-7 w-7 flex items-center justify-center text-xs font-bold opacity-75 hover:opacity-100"
+          title="Larger Text"
+        >
+          A+
+        </button>
+      </div>
+
+      <div class="h-4 w-px bg-current opacity-20 hidden sm:block"></div>
+
+      <!-- Panel triggers -->
+      <div class="flex items-center gap-1.5">
+        <button 
+          (click)="togglePanel('chapters')"
+          class="h-8 px-2.5 rounded-lg text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-all flex items-center gap-1 border border-current/10"
+          [ngClass]="{ 'bg-black/10 dark:bg-white/10': activePanel() === 'chapters' }"
+        >
+          Chapters
+        </button>
+        <button 
+          (click)="togglePanel('highlights')"
+          class="h-8 px-2.5 rounded-lg text-xs font-semibold hover:bg-black/5 dark:hover:bg-white/5 transition-all flex items-center gap-1 border border-current/10 relative"
+          [ngClass]="{ 'bg-black/10 dark:bg-white/10': activePanel() === 'highlights' }"
+        >
+          Notes
+          @if ((book()?.highlights?.length || 0) > 0) {
+            <span class="absolute -top-1.5 -right-1.5 h-4 w-4 bg-amber-850 text-white rounded-full flex items-center justify-center text-[8px] font-bold">
+              {{ book()?.highlights?.length }}
+            </span>
+          }
+        </button>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- Reading Canvas Body -->
+  <main 
+    (mouseup)="handleTextSelection($event)"
+    class="max-w-2xl mx-auto px-6 pt-32 pb-40 leading-relaxed cursor-pointer"
+    [style.fontSize.%]="fontSize()"
+    [ngClass]="{
+      'font-serif': theme() === 'light' || theme() === 'sepia',
+      'font-sans': theme() === 'dark'
+    }"
+  >
+    @if (book(); as activeBook) {
+      
+      <!-- Render chapters -->
+      @for (chapter of activeBook.chapters; track chapter.title; let cIndex = $index) {
+        <div class="space-y-10">
+          <!-- Chapter Header -->
+          <div class="text-center py-6 border-b border-current/10 mb-10">
+            <h2 class="text-xs font-bold tracking-widest uppercase text-amber-800/80 mb-2">Chapter {{ cIndex + 1 }}</h2>
+            <h3 class="text-xl sm:text-2xl font-bold tracking-tight text-current">{{ chapter.title }}</h3>
+          </div>
+
+          <!-- Paragraph blocks -->
+          @for (paragraph of chapter.paragraphs; track paragraph; let pIndex = $index) {
+            <p 
+              [id]="'p_' + pIndex" 
+              class="text-justify text-base sm:text-lg indent-8 focus:outline-none transition-all duration-300 relative group/para"
+            >
+              <!-- Render segments (highlighted vs plain) inside the paragraph -->
+              @for (segment of getParagraphSegments(paragraph); track $index) {
+                @if (segment.isHighlighted) {
+                  <span 
+                    class="highlight-segment cursor-pointer transition-all font-medium border-b py-0.5 rounded-sm"
+                    [ngClass]="{
+                      'bg-yellow-200/80 text-stone-950 border-yellow-400/80 hover:bg-yellow-300': segment.color === 'yellow' && theme() !== 'dark',
+                      'bg-teal-200/80 text-stone-955 border-teal-400/80 hover:bg-teal-300': segment.color === 'teal' && theme() !== 'dark',
+                      'bg-rose-200/80 text-stone-955 border-rose-400/80 hover:bg-rose-300': segment.color === 'rose' && theme() !== 'dark',
+                      'bg-yellow-500/15 text-yellow-300 border-yellow-500/50 hover:bg-yellow-500/25': segment.color === 'yellow' && theme() === 'dark',
+                      'bg-teal-500/15 text-teal-300 border-teal-500/50 hover:bg-teal-500/25': segment.color === 'teal' && theme() === 'dark',
+                      'bg-rose-50/15 text-rose-300 border-rose-500/50 hover:bg-rose-500/25': segment.color === 'rose' && theme() === 'dark'
+                    }"
+                    [attr.data-note]="segment.note"
+                    [title]="segment.note ? 'View Note' : 'Active Highlight'"
+                  >{{ segment.text }}</span>
+                } @else {
+                  <span>{{ segment.text }}</span>
+                }
+              }
+              
+              <!-- Paragraph Quick Anchor indicator shown on hover -->
+              <span 
+                (click)="scrollToParagraph(pIndex)"
+                class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover/para:opacity-40 hover:!opacity-100 text-[10px] font-bold uppercase tracking-widest hidden md:inline-block cursor-pointer select-none transition-opacity"
+                title="Anchor scroll here"
+              >
+                #{{ pIndex + 1 }}
+              </span>
+            </p>
+          }
+        </div>
+      }
+
+      <!-- Reading Finished indicator -->
+      <div class="mt-20 border-t border-current/10 pt-10 text-center select-none">
+        <span class="text-[10px] font-bold tracking-widest uppercase opacity-45 block">End of Curated Reading Session</span>
+        <p class="text-xs opacity-65 mt-2">You can close this tab or return to the library dashboard to select another title.</p>
+        <div class="flex justify-center mt-5">
+          <a 
+            routerLink="/library"
+            class="inline-flex justify-center items-center font-bold bg-amber-800 hover:bg-amber-900 text-amber-50 text-xs px-5 h-9 rounded-lg shadow-sm transition-all"
+          >
+            Return to Library Shelf
+          </a>
+        </div>
+      </div>
+
+    } @else {
+      <!-- Loading indicator -->
+      <div class="flex flex-col items-center justify-center min-h-[300px] animate-pulse select-none text-current">
+        <svg class="animate-spin h-6 w-6 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm font-medium">Opening Book Chamber...</span>
+      </div>
+    }
+  </main>
+
+  <!-- Bottom Page Progress Indicator (Fixed bottom right) -->
+  @if (book(); as activeBook) {
+    <div 
+      class="fixed bottom-5 right-5 z-30 px-3 py-1.5 rounded-lg border text-[10px] font-bold tracking-wider uppercase shadow select-none transition-all duration-300"
+      [ngClass]="{
+        'bg-white border-stone-200 text-stone-500': theme() === 'light',
+        'bg-sepia-100 border-sepia-200/60 text-sepia-800': theme() === 'sepia',
+        'bg-slate-900 border-slate-800 text-slate-400': theme() === 'dark'
+      }"
+    >
+      Synced • {{ activeBook.progress }}% read
+    </div>
+  }
+
+  <!-- Floating Active Study Note Display Bubble (At the bottom of viewport) -->
+  @if (activeNoteDisplay(); as noteDisp) {
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-lg w-full px-4 animate-slideUp select-text">
+      <div 
+        class="relative rounded-xl border p-5 shadow-2xl overflow-hidden text-left"
+        [ngClass]="{
+          'bg-white border-stone-200 text-stone-900': theme() === 'light',
+          'bg-[#fcf7ec] border-sepia-200/80 text-sepia-950': theme() === 'sepia',
+          'bg-slate-900 border-slate-850 text-slate-100': theme() === 'dark'
+        }"
+      >
+        <div class="absolute top-0 left-0 w-1 h-full bg-amber-700"></div>
+        <!-- Close bubble button -->
+        <button 
+          (click)="activeNoteDisplay.set(null)"
+          class="absolute top-2.5 right-2.5 p-1 rounded-md opacity-50 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5 transition-all text-current"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+            <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+          </svg>
+        </button>
+
+        <h4 class="text-[10px] font-bold tracking-wider uppercase text-amber-800 mb-1.5">Attached Study Note</h4>
+        <blockquote class="text-xs border-l-2 border-current/20 pl-2.5 italic opacity-85 line-clamp-2">"{{ noteDisp.text }}"</blockquote>
+        <p class="text-xs font-serif leading-relaxed mt-3 pl-2.5 font-medium text-stone-850 dark:text-stone-100">{{ noteDisp.note }}</p>
+      </div>
+    </div>
+  }
+
+  <!-- Text-Selection Floating Highlight Popover -->
+  @if (showSelectionMenu()) {
+    <div 
+      class="fixed z-50 border rounded-xl shadow-xl p-3.5 flex flex-col gap-3 animate-scaleUp w-64"
+      [style.left.px]="menuX()"
+      [style.top.px]="menuY()"
+      [ngClass]="{
+        'bg-white border-stone-200 text-stone-900': theme() !== 'dark',
+        'bg-slate-900 border-slate-800 text-slate-100': theme() === 'dark'
+      }"
+    >
+      <!-- Color triggers row -->
+      <div class="flex items-center justify-between gap-1 select-none">
+        <span class="text-[10px] font-bold tracking-wider uppercase opacity-60">Highlight:</span>
+        <div class="flex items-center gap-2">
+          <button 
+            (click)="createHighlight('yellow')"
+            class="h-5 w-5 rounded-full bg-yellow-300 dark:bg-yellow-500 border border-yellow-400 dark:border-yellow-600 hover:scale-110 shadow-sm transition-transform"
+            title="Yellow highlight"
+          ></button>
+          <button 
+            (click)="createHighlight('teal')"
+            class="h-5 w-5 rounded-full bg-teal-300 dark:bg-teal-500 border border-teal-400 dark:border-teal-600 hover:scale-110 shadow-sm transition-transform"
+            title="Teal highlight"
+          ></button>
+          <button 
+            (click)="createHighlight('rose')"
+            class="h-5 w-5 rounded-full bg-rose-300 dark:bg-rose-500 border border-rose-400 dark:border-rose-600 hover:scale-110 shadow-sm transition-transform"
+            title="Rose highlight"
+          ></button>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="h-px bg-current opacity-10"></div>
+
+      <!-- Add note option toggle -->
+      @if (!isNoteInputOpen()) {
+        <button 
+          type="button"
+          (click)="isNoteInputOpen.set(true)"
+          class="text-left text-xs font-semibold text-amber-800 hover:text-amber-900 flex items-center gap-1 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+            <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.315.315-.715.555-1.154.73l-3.155 1.263a.5.5 0 01-.652-.652z" />
+            <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.59.196l.833.583A1 1 0 0010.3 4H15a2 2 0 012 2v2.28a1 1 0 01-.196.59l-.583.833A1 1 0 0016 10.3V15a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" />
+          </svg>
+          Attach study note...
+        </button>
+      } @else {
+        <!-- Expanded Note input form -->
+        <form (submit)="createHighlight('yellow')" class="space-y-2 select-text">
+          <textarea 
+            [value]="newNoteText()"
+            (input)="newNoteText.set($any($event.target).value)"
+            placeholder="Write note details here..."
+            class="w-full h-16 p-2 rounded-lg border text-xs focus:outline-none focus:border-amber-800 focus:ring-1 focus:ring-amber-800 bg-stone-50/40 dark:bg-slate-800/40 border-current/15 text-current transition-all"
+            required
+          ></textarea>
+          <div class="flex items-center justify-between gap-2 select-none">
+            <button 
+              type="button" 
+              (click)="isNoteInputOpen.set(false)"
+              class="text-[10px] font-semibold opacity-60 hover:opacity-100 text-current"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit"
+              class="h-7 px-3 bg-amber-850 hover:bg-amber-900 text-white font-bold text-[10px] rounded-lg shadow-sm"
+            >
+              Save Note
+            </button>
+          </div>
+        </form>
+      }
+
+      <!-- Popover micro close -->
+      <button 
+        (click)="closeSelectionMenu()"
+        class="absolute -top-2 -right-2 h-5 w-5 rounded-full border shadow bg-stone-900 hover:bg-stone-850 text-stone-50 border-stone-850/80 flex items-center justify-center text-[9px] select-none transition-all"
+      >
+        ✕
+      </button>
+    </div>
+  }
+
+  <!-- Chapters & Highlights sliding Side Drawers -->
+  @if (activePanel(); as panel) {
+    <!-- Sidebar backdrop overlay -->
+    <div 
+      (click)="activePanel.set(null)"
+      class="fixed inset-0 z-40 bg-stone-900/10 backdrop-blur-xs select-none"
+    ></div>
+
+    <!-- Sliding Panel Container -->
+    <aside 
+      class="fixed top-0 right-0 bottom-0 w-80 z-50 p-6 flex flex-col justify-between shadow-2xl border-l select-none animate-slideIn text-left"
+      [ngClass]="{
+        'bg-white border-stone-200 text-stone-900': theme() === 'light',
+        'bg-[#FAF6EC] border-sepia-200 text-sepia-950': theme() === 'sepia',
+        'bg-slate-900 border-slate-850 text-slate-100': theme() === 'dark'
+      }"
+    >
+      <!-- Panel Header -->
+      <div class="flex items-center justify-between border-b border-current/10 pb-4 mb-5">
+        <h3 class="font-sans text-xs font-bold tracking-widest uppercase text-amber-800">
+          {{ panel === 'chapters' ? 'Chapters Outline' : 'Saved Highlights & Notes' }}
+        </h3>
+        <button 
+          (click)="activePanel.set(null)"
+          class="p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-current opacity-60 hover:opacity-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+            <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Panel Scroll Body -->
+      <div class="flex-1 overflow-y-auto custom-scrollbar space-y-4">
+        
+        <!-- CHAPTERS VIEW -->
+        @if (panel === 'chapters') {
+          <div class="space-y-2">
+            @for (chapter of book()?.chapters; track chapter.title; let cIndex = $index) {
+              <button 
+                (click)="scrollToParagraph(0)"
+                class="w-full text-left p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all flex items-start gap-2 border border-transparent hover:border-current/5"
+              >
+                <span class="text-xs font-bold opacity-45">0{{ cIndex + 1 }}</span>
+                <div>
+                  <h4 class="text-xs font-bold text-current">Chapter {{ cIndex + 1 }}</h4>
+                  <p class="text-[11px] opacity-70 mt-0.5 font-medium leading-tight truncate max-w-[200px]">{{ chapter.title }}</p>
+                </div>
+              </button>
+            }
+          </div>
+        }
+
+        <!-- HIGHLIGHTS VIEW -->
+        @if (panel === 'highlights') {
+          @if ((book()?.highlights?.length || 0) === 0) {
+            <div class="flex flex-col items-center justify-center py-20 text-center opacity-45">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor" class="w-10 h-10 mb-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+              </svg>
+              <p class="text-xs font-bold">No highlights yet.</p>
+              <p class="text-[10px] leading-tight mt-1 max-w-[180px]">Drag selection over text in the book to save study notes.</p>
+            </div>
+          } @else {
+            <div class="space-y-3 select-text">
+              @for (hl of book()?.highlights; track hl.id) {
+                <div 
+                  class="p-3.5 rounded-xl border border-current/10 bg-black/5 dark:bg-white/5 relative group transition-all"
+                  [ngClass]="{
+                    'border-l-4 !border-l-yellow-400': hl.color === 'yellow',
+                    'border-l-4 !border-l-teal-400': hl.color === 'teal',
+                    'border-l-4 !border-l-rose-400': hl.color === 'rose'
+                  }"
+                >
+                  <!-- Jump to highlight action -->
+                  <div 
+                    (click)="scrollToHighlightText(hl.text)"
+                    class="cursor-pointer space-y-2 text-left"
+                  >
+                    <blockquote class="text-[11px] leading-relaxed italic border-l border-current/20 pl-2 opacity-85 font-medium">
+                      "{{ hl.text }}"
+                    </blockquote>
+                    @if (hl.note) {
+                      <p class="text-[11px] font-semibold text-current opacity-95 leading-normal mt-1.5 font-serif">
+                        {{ hl.note }}
+                      </p>
+                    }
+                  </div>
+
+                  <!-- Delete button (visible on hover) -->
+                  <button 
+                    (click)="removeHighlight(hl.id)"
+                    class="absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full bg-stone-900 text-stone-50 hover:bg-red-700 flex items-center justify-center shadow-md border border-stone-850/60 opacity-0 group-hover:opacity-100 transition-all select-none"
+                    title="Delete highlight"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                      <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.842 8.118A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.736-2.448l.842-8.118.149.022a.75.75 0 00.23-1.482 42.825 42.825 0 00-2.365-.298V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4a.75.75 0 01.75.75v.064c-.5.01-1 .01-1.5 0V4.75A.75.75 0 0110 4zm-2.5 8.25a.75.75 0 10-1.5 0v3a.75.75 0 101.5 0v-3zm4.5 0a.75.75 0 00-1.5 0v3a.75.75 0 001.5 0v-3z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        }
+
+      </div>
+
+      <!-- Panel Footer details -->
+      <div class="border-t border-current/10 pt-4 mt-5 text-[10px] font-bold tracking-widest uppercase opacity-45 select-none text-center">
+        Synced via Readivo Cloud
+      </div>
+    </aside>
+  }
+
+</div>

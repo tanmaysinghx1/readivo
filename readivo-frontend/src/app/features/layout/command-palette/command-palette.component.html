@@ -1,0 +1,111 @@
+@if (isOpen()) {
+  <!-- Backdrop Blur Overlay Screen -->
+  <div 
+    class="fixed inset-0 bg-stone-950/60 backdrop-blur-sm z-50 flex items-start justify-center pt-[15vh] p-4 animate-fadeIn select-none"
+    (click)="close()"
+  >
+    <!-- Command Palette Dialog Container -->
+    <div 
+      class="bg-stone-900/95 backdrop-blur-md border border-stone-800 shadow-2xl rounded-2xl w-full max-w-lg overflow-hidden flex flex-col pointer-events-auto transition-all"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Search Input Area -->
+      <div class="relative border-b border-stone-800/80 p-4 flex items-center">
+        <!-- Search Magnifier Icon -->
+        <div class="absolute left-4 text-stone-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637z" />
+          </svg>
+        </div>
+        
+        <!-- Input Field -->
+        <input 
+          #searchInput
+          type="text" 
+          [ngModel]="searchQuery()" 
+          (ngModelChange)="searchQuery.set($event); selectedIndex.set(0)"
+          placeholder="Search books, chapters, or type commands..."
+          class="w-full h-11 pl-9 pr-12 bg-transparent text-stone-100 placeholder-stone-500 text-sm font-medium focus:outline-none"
+        />
+        
+        <!-- Escape Shortcut Key Badge -->
+        <div class="absolute right-4 flex items-center gap-1">
+          <kbd class="px-1.5 py-0.5 rounded border border-stone-800 bg-stone-950 text-[9px] font-bold text-stone-500 shadow-sm">ESC</kbd>
+        </div>
+      </div>
+
+      <!-- Results Container -->
+      <div class="max-h-80 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+        @if (flatFilteredList().length > 0) {
+          @for (item of flatFilteredList(); track item.id; let idx = $index) {
+            <div 
+              (mouseenter)="selectedIndex.set(idx)"
+              (click)="item.execute()"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all border"
+              [ngClass]="selectedIndex() === idx ? 'bg-stone-800/80 border-stone-750 text-stone-50 shadow-sm' : 'bg-transparent border-transparent text-stone-400 hover:bg-stone-850/30'"
+            >
+              <!-- Icon Indicator -->
+              <div 
+                class="shrink-0 flex h-7 w-7 items-center justify-center rounded-lg bg-stone-950 border transition-colors"
+                [ngClass]="selectedIndex() === idx ? 'border-stone-800 text-stone-100' : 'border-stone-900/50 text-stone-500'"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="item.iconSvgPath" />
+                </svg>
+              </div>
+
+              <!-- Text Details -->
+              <div class="flex-1 min-w-0 text-left">
+                <p class="text-xs font-bold truncate">{{ item.label }}</p>
+                @if (item.subtext) {
+                  <p class="text-[10px] text-stone-500 truncate mt-0.5">{{ item.subtext }}</p>
+                }
+              </div>
+
+              <!-- Category Badge / Enter Indicator -->
+              <div class="shrink-0 flex items-center gap-1.5">
+                @if (selectedIndex() === idx) {
+                  <span class="text-[8px] font-bold text-stone-500 tracking-wider uppercase bg-stone-950 border border-stone-800 px-1.5 py-0.5 rounded-md flex items-center gap-1">
+                    Select
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-2.5 h-2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </span>
+                } @else {
+                  <span class="text-[8px] font-bold text-stone-600 border border-stone-900/40 px-1.5 py-0.5 rounded-md uppercase">
+                    {{ item.category }}
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        } @else {
+          <!-- Empty State -->
+          <div class="py-12 text-center space-y-2">
+            <p class="text-xs font-bold text-stone-400">No matches found</p>
+            <p class="text-[10px] text-stone-500 max-w-xs mx-auto leading-relaxed">No books, pages, or system commands matched your query. Try searching for titles or authors.</p>
+          </div>
+        }
+      </div>
+
+      <!-- Navigation Legend Footer -->
+      <div class="border-t border-stone-800 px-4 py-3 flex items-center justify-between text-[9px] text-stone-500 font-bold bg-stone-950/50">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1">
+            <kbd class="px-1 py-0.5 rounded border border-stone-800 bg-stone-900 shadow-sm">↑</kbd>
+            <kbd class="px-1 py-0.5 rounded border border-stone-800 bg-stone-900 shadow-sm">↓</kbd>
+            Navigate
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 rounded border border-stone-800 bg-stone-900 shadow-sm">ENTER</kbd>
+            Select
+          </span>
+        </div>
+        <div>
+          <span>Readivo Commands</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

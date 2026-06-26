@@ -1,0 +1,539 @@
+<!-- Sticky Header / Navbar -->
+<header class="sticky top-0 z-40 w-full border-b border-stone-200/50 bg-stone-50/80 backdrop-blur-md transition-all">
+  <div class="mx-auto flex max-w-7xl h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+    <!-- Logo & Brand -->
+    <a href="#" class="flex items-center gap-2.5 group">
+      <div class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-stone-900 shadow-md transition-transform group-hover:scale-105">
+        <img src="images/logo.svg" class="h-5 w-5 invert" alt="Readivo Logo" />
+      </div>
+      <span class="font-sans text-xl font-bold tracking-tight text-stone-900">Readivo</span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#features" class="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">Features</a>
+      <a href="#demo" class="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">Interactive Demo</a>
+      <a href="#catalog" class="text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">Browse Books</a>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="flex items-center gap-3">
+      <button routerLink="/login" class="text-sm font-medium text-stone-600 hover:text-stone-900 px-3 py-2 transition-colors">
+        Sign In
+      </button>
+      <button routerLink="/register" class="hidden sm:inline-flex text-sm font-medium bg-stone-900 text-stone-50 hover:bg-stone-800 px-4  h-9 items-center rounded-lg shadow-sm hover:shadow transition-all">
+        Get Started
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="bg-stone-50 text-stone-850 selection:bg-sepia-200/60 selection:text-sepia-900">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Hero Text Content -->
+        <div class="lg:col-span-7 flex flex-col items-start space-y-6 text-left">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-sepia-100/80 border border-sepia-200 px-3.5 py-1 text-xs font-semibold text-sepia-900 tracking-wide">
+            <span class="flex h-1.5 w-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+            Zen Mode for Active Learners
+          </span>
+          
+          <h1 class="font-sans text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-stone-950 leading-tight">
+            A frictionless sanctuary for <span class="text-amber-800 underline decoration-sepia-300 decoration-4 underline-offset-4">distraction-free</span> reading.
+          </h1>
+          
+          <p class="font-sans text-base sm:text-lg text-stone-600 max-w-2xl leading-relaxed">
+            Immerse yourself in books and study materials without the noise. Read in a clean, beautifully-tailored environment. Highlight key insights, attach structured notes, and sync your reading progress automatically across all your devices.
+          </p>
+          
+          <div class="flex flex-wrap gap-4 pt-2 w-full sm:w-auto">
+            <a href="#demo" class="flex-1 sm:flex-initial inline-flex justify-center items-center font-medium bg-amber-800 hover:bg-amber-900 text-amber-50 px-6 h-12 rounded-xl shadow-md shadow-amber-900/10 hover:shadow-lg transition-all">
+              Try the Live Demo
+            </a>
+            <a href="#catalog" class="flex-1 sm:flex-initial inline-flex justify-center items-center font-medium bg-white hover:bg-stone-100 border border-stone-200 text-stone-800 px-6 h-12 rounded-xl shadow-sm hover:shadow transition-all">
+              Explore Catalog
+            </a>
+          </div>
+
+          <!-- Trust Badges / Stats -->
+          <div class="grid grid-cols-3 gap-6 pt-6 border-t border-stone-200/60 w-full max-w-md">
+            <div>
+              <p class="text-2xl font-bold text-stone-950">100%</p>
+              <p class="text-xs text-stone-500 font-medium">Distraction-Free</p>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-stone-950">Zero</p>
+              <p class="text-xs text-stone-500 font-medium">Visual Clutter</p>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-stone-950">Instant</p>
+              <p class="text-xs text-stone-500 font-medium">Cloud Syncing</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Graphic (Floating Mockup) -->
+        <div class="lg:col-span-5 relative hidden lg:block">
+          <!-- Decorative blurred gradient circles -->
+          <div class="absolute -top-12 -left-12 h-64 w-64 rounded-full bg-sepia-200/50 blur-3xl -z-10"></div>
+          <div class="absolute -bottom-12 -right-12 h-64 w-64 rounded-full bg-amber-200/30 blur-3xl -z-10"></div>
+          
+          <!-- Mock Reader Frame -->
+          <div class="relative mx-auto max-w-sm rounded-2xl border border-stone-200/80 bg-white p-5 shadow-2xl shadow-stone-200/60 rotate-2 hover:rotate-0 transition-transform duration-500">
+            <!-- Mock Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div class="flex items-center gap-1.5">
+                <span class="h-2.5 w-2.5 rounded-full bg-stone-200"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-stone-200"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-stone-200"></span>
+              </div>
+              <span class="text-[10px] font-medium text-stone-400">Meditations • Marcus Aurelius</span>
+              <span class="text-[10px] font-semibold text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded">Page 24</span>
+            </div>
+
+            <!-- Mock Book content -->
+            <div class="py-4 space-y-3 font-serif text-[11px] leading-relaxed text-stone-800">
+              <p class="indent-4">
+                Let opinion be taken away, and no man will think himself harmed. Let the feeling of harm be taken away, and the harm itself is gone.
+              </p>
+              <p class="bg-amber-100/80 border-b border-amber-300 px-1 py-0.5 inline rounded-sm cursor-pointer">
+                The mind is the ruler of the soul.
+              </p>
+              <p>
+                It should remain untouched by the agitations of the flesh, not blending with them, but walling itself off.
+              </p>
+            </div>
+
+            <!-- Mock Progress Bar -->
+            <div class="pt-3 border-t border-stone-100 flex items-center justify-between">
+              <div class="w-2/3 bg-stone-100 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-amber-700 h-full rounded-full" style="width: 42%"></div>
+              </div>
+              <span class="text-[10px] font-medium text-stone-500">42% completed</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Zen Reader Demo Section -->
+  <section id="demo" class="py-20 bg-stone-100/60 border-y border-stone-200/40 relative">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+        <h2 class="font-sans text-3xl sm:text-4xl font-bold text-stone-950 tracking-tight">
+          Experience the Zen Mode
+        </h2>
+        <p class="font-sans text-base text-stone-600">
+          We believe reading should be peaceful. Interact with the sandbox below to try out our custom themes, font scaling, active text highlighting, and distraction-free Zen Toggle.
+        </p>
+      </div>
+
+      <!-- Live Sandbox Container -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Interactive Reader Window -->
+        <div class="lg:col-span-8 w-full transition-all duration-300">
+          <div 
+            class="relative rounded-2xl shadow-xl border overflow-hidden transition-colors duration-300 ease-in-out min-h-[380px] flex flex-col"
+            [ngClass]="{
+              'bg-stone-50 text-stone-900 border-stone-200/80': readerTheme() === 'light',
+              'bg-sepia-50 text-sepia-900 border-sepia-200/80': readerTheme() === 'sepia',
+              'bg-slate-950 text-slate-100 border-slate-900': readerTheme() === 'dark'
+            }"
+          >
+            <!-- Top Controls (Hidden in Zen Mode) -->
+            <div 
+              class="flex flex-wrap items-center justify-between px-5 py-3 border-b gap-3 transition-opacity duration-300"
+              [ngClass]="{
+                'opacity-0 pointer-events-none h-0 py-0 border-0': zenModeActive(),
+                'opacity-100 border-stone-200/50': readerTheme() === 'light',
+                'opacity-100 border-sepia-200/30': readerTheme() === 'sepia',
+                'opacity-100 border-slate-800/60': readerTheme() === 'dark'
+              }"
+            >
+              <!-- Left side: Theme controls -->
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold tracking-wider uppercase opacity-60">Theme:</span>
+                <div class="flex items-center bg-black/5 dark:bg-white/5 p-1 rounded-lg gap-1">
+                  <button 
+                    (click)="setReaderTheme('light')" 
+                    class="px-2.5 py-1 rounded text-xs font-semibold transition-all"
+                    [ngClass]="{
+                      'bg-white text-stone-900 shadow-sm': readerTheme() === 'light',
+                      'hover:opacity-100 opacity-60 text-current': readerTheme() !== 'light'
+                    }"
+                  >
+                    Light
+                  </button>
+                  <button 
+                    (click)="setReaderTheme('sepia')" 
+                    class="px-2.5 py-1 rounded text-xs font-semibold transition-all"
+                    [ngClass]="{
+                      'bg-[#ebd6ae] text-sepia-900 shadow-sm': readerTheme() === 'sepia',
+                      'hover:opacity-100 opacity-60 text-current': readerTheme() !== 'sepia'
+                    }"
+                  >
+                    Sepia
+                  </button>
+                  <button 
+                    (click)="setReaderTheme('dark')" 
+                    class="px-2.5 py-1 rounded text-xs font-semibold transition-all"
+                    [ngClass]="{
+                      'bg-slate-800 text-slate-100 shadow-sm': readerTheme() === 'dark',
+                      'hover:opacity-100 opacity-60 text-current': readerTheme() !== 'dark'
+                    }"
+                  >
+                    Dark
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right side: Font scale + Zen Mode Toggle -->
+              <div class="flex items-center gap-4">
+                <!-- Font scale -->
+                <div class="flex items-center gap-1">
+                  <button 
+                    (click)="adjustFontSize(-15)" 
+                    class="h-7 w-7 rounded-lg flex items-center justify-center bg-black/5 dark:bg-white/5 text-xs hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-bold"
+                    title="Decrease text size"
+                  >
+                    A-
+                  </button>
+                  <span class="text-xs font-semibold opacity-70 w-8 text-center">{{ readerFontSize() }}%</span>
+                  <button 
+                    (click)="adjustFontSize(15)" 
+                    class="h-7 w-7 rounded-lg flex items-center justify-center bg-black/5 dark:bg-white/5 text-xs hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-bold"
+                    title="Increase text size"
+                  >
+                    A+
+                  </button>
+                </div>
+                
+                <div class="h-4 w-px bg-current opacity-20"></div>
+
+                <!-- Zen Toggle -->
+                <button 
+                  (click)="toggleZenMode()"
+                  class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-800 hover:bg-amber-900 text-amber-50 shadow-sm flex items-center gap-1.5 transition-all"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                    <path fill-rule="evenodd" d="M3.25 3A.75.75 0 014 3.75v12.5a.75.75 0 01-1.5 0V3.75A.75.75 0 013.25 3zm13.5 0a.75.75 0 01.75.75v12.5a.75.75 0 01-1.5 0V3.75a.75.75 0 01.75-.75zM6 10a.75.75 0 01.75-.75h6.5a.75.75 0 010 1.5h-6.5A.75.75 0 016 10z" clip-rule="evenodd" />
+                  </svg>
+                  Zen Mode
+                </button>
+              </div>
+            </div>
+
+            <!-- Zen Mode Exit Banner (Fades in when Zen Mode is Active) -->
+            <div 
+              class="absolute top-4 left-1/2 -translate-x-1/2 transition-all duration-500 z-10"
+              [ngClass]="{
+                'opacity-100 scale-100 pointer-events-auto': zenModeActive(),
+                'opacity-0 scale-90 pointer-events-none': !zenModeActive()
+              }"
+            >
+              <button 
+                (click)="toggleZenMode()"
+                class="text-xs font-semibold px-4 py-1.5 rounded-full border bg-stone-900/90 hover:bg-stone-900 text-stone-50 border-stone-800/80 shadow-lg flex items-center gap-2 backdrop-blur transition-all"
+              >
+                <span>Click to Exit Zen Mode</span>
+                <kbd class="px-1.5 py-0.5 rounded text-[10px] bg-stone-800 text-stone-400">Esc</kbd>
+              </button>
+            </div>
+
+            <!-- Reading Body Area -->
+            <div 
+              class="flex-1 p-8 sm:p-12 md:p-16 max-w-2xl mx-auto flex flex-col justify-center transition-all duration-500"
+              [style.fontSize.%]="readerFontSize()"
+              [ngClass]="{
+                'font-serif': readerTheme() === 'sepia' || readerTheme() === 'light',
+                'font-sans': readerTheme() === 'dark'
+              }"
+            >
+              <div class="space-y-6 leading-relaxed select-text">
+                <p class="indent-8 text-justify">
+                  Remember this: that very little is needed to make a happy life. It is all within yourself, in your way of thinking. Therefore, if you are able, remove all anxiety and let your mind rest in 
+                  <span 
+                    (click)="toggleHighlight('h1', 'tranquility')"
+                    class="cursor-pointer transition-all duration-200 py-0.5 px-1 rounded-sm font-semibold"
+                    [ngClass]="{
+                      'bg-amber-200/70 text-amber-950 border-b border-amber-400': activeHighlights().has('h1') && readerTheme() !== 'dark',
+                      'bg-yellow-500/20 text-yellow-300 border-b border-yellow-500': activeHighlights().has('h1') && readerTheme() === 'dark',
+                      'hover:bg-amber-200/30 border-b border-dashed border-current': !activeHighlights().has('h1')
+                    }"
+                  >tranquility</span>. For the mind can shape its own sanctuary.
+                </p>
+
+                <p class="indent-8 text-justify">
+                  <span 
+                    (click)="toggleHighlight('h2', 'Look inward')"
+                    class="cursor-pointer transition-all duration-200 py-0.5 px-1 rounded-sm font-semibold"
+                    [ngClass]="{
+                      'bg-teal-200/70 text-teal-950 border-b border-teal-400': activeHighlights().has('h2') && readerTheme() !== 'dark',
+                      'bg-teal-500/20 text-teal-300 border-b border-teal-500': activeHighlights().has('h2') && readerTheme() === 'dark',
+                      'hover:bg-teal-200/30 border-b border-dashed border-current': !activeHighlights().has('h2')
+                    }"
+                  >Look inward</span>. Within is the fountain of good, and it will ever bubble up, if thou wilt ever dig. 
+                </p>
+
+                <p class="indent-8 text-justify">
+                  We are habitually hurt not by the events themselves, but by our opinion and judgment of them. 
+                  <span 
+                    (click)="toggleHighlight('h3', 'Remove the judgment, and the hurt vanishes')"
+                    class="cursor-pointer transition-all duration-200 py-0.5 px-1 rounded-sm font-semibold"
+                    [ngClass]="{
+                      'bg-rose-200/70 text-rose-950 border-b border-rose-400': activeHighlights().has('h3') && readerTheme() !== 'dark',
+                      'bg-rose-500/20 text-rose-300 border-b border-rose-500': activeHighlights().has('h3') && readerTheme() === 'dark',
+                      'hover:bg-rose-200/30 border-b border-dashed border-current': !activeHighlights().has('h3')
+                    }"
+                  >Remove the judgment, and the hurt vanishes</span>. A man is only as unhappy as he has convinced himself he is.
+                </p>
+              </div>
+            </div>
+
+            <!-- Footer indicator inside reader (Hidden in Zen Mode) -->
+            <div 
+              class="px-5 py-2.5 text-center text-[10px] font-medium opacity-50 select-none border-t transition-opacity duration-300"
+              [ngClass]="{
+                'opacity-0 h-0 py-0 border-0': zenModeActive(),
+                'border-stone-200/30': readerTheme() === 'light',
+                'border-sepia-200/20': readerTheme() === 'sepia',
+                'border-slate-800/40': readerTheme() === 'dark'
+              }"
+            >
+              Marcus Aurelius • Meditations, Book IV • Click underlined phrases to toggle notes
+            </div>
+          </div>
+        </div>
+
+        <!-- Explanatory / Context Widget Panel -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+          
+          <!-- Note block display -->
+          <div class="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-700"></div>
+            
+            <h3 class="font-sans text-sm font-bold text-stone-900 tracking-wide uppercase opacity-75 mb-3 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-amber-700">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+              </svg>
+              Study Note Attachment
+            </h3>
+            
+            <div class="font-sans text-sm text-stone-700 leading-relaxed min-h-[90px] flex items-center justify-center">
+              @if (selectedHighlightText()) {
+                <div class="animate-fadeIn">
+                  <p class="italic text-stone-800">"{{ selectedHighlightText() }}"</p>
+                  <p class="text-[10px] mt-2 font-semibold text-amber-800 tracking-wider uppercase">Active Study Note</p>
+                </div>
+              } @else {
+                <div class="text-center text-stone-400 py-4 animate-pulse">
+                  <p class="text-xs">Select an underlined phrase in the book reader window to view attached study notes and highlights.</p>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Feature highlight card -->
+          <div class="bg-amber-950 text-amber-50 rounded-2xl p-6 border border-amber-900/40 shadow-md">
+            <h3 class="font-sans text-base font-bold mb-2">Why Zen Mode?</h3>
+            <p class="text-xs text-amber-200/80 leading-relaxed mb-4">
+              Modern digital reading is filled with notifications, banners, and links. Readivo eliminates all elements except the words, allowing your brain to enter deep focus.
+            </p>
+            <div class="bg-amber-900/40 rounded-xl p-3 border border-amber-800/30">
+              <span class="text-[10px] font-bold tracking-wider text-amber-300 uppercase">Tip for the demo</span>
+              <p class="text-[11px] text-amber-100/90 mt-1">
+                Click the <strong class="text-amber-50">Zen Mode</strong> button to experience the absolute clean design. Toggle the themes to find your reading comfort.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Core Features Section -->
+  <section id="features" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+      <h2 class="font-sans text-3xl sm:text-4xl font-bold text-stone-950 tracking-tight">
+        Engineered for Serious Readers
+      </h2>
+      <p class="font-sans text-base text-stone-600">
+        Readivo is not just another e-reader. It is a structured environment designed to facilitate learning, comprehension, and long-term retention.
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      @for (feature of features(); track feature.title) {
+        <div class="flex items-start gap-5 p-6 rounded-2xl border border-stone-200/50 bg-white shadow-sm hover:shadow-md transition-all group">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-800 border border-amber-100 group-hover:bg-amber-800 group-hover:text-amber-50 transition-colors">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="feature.iconSvgPath" />
+            </svg>
+          </div>
+          <div class="space-y-1.5 text-left">
+            <h3 class="font-sans text-base font-bold text-stone-950">{{ feature.title }}</h3>
+            <p class="font-sans text-sm text-stone-600 leading-relaxed">{{ feature.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Book Showcase Section -->
+  <section id="catalog" class="py-24 bg-stone-100/60 border-t border-stone-200/40">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-100">Our Library</span>
+        <h2 class="font-sans text-3xl sm:text-4xl font-bold text-stone-950 tracking-tight">
+          Start Reading Instantly
+        </h2>
+        <p class="font-sans text-base text-stone-600">
+          Unlock a collection of hand-picked masterpieces. Select any book to open it immediately in your distraction-free digital reader.
+        </p>
+      </div>
+
+      <!-- Book Catalog Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        @for (book of books(); track book.id) {
+          <div class="flex flex-col bg-white rounded-2xl border border-stone-200/60 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden">
+            
+            <!-- Styled CSS Book Cover Container -->
+            <div class="relative aspect-video w-full flex items-center justify-center p-6 bg-stone-950 border-b border-stone-200 overflow-hidden">
+              <!-- Grid Background pattern -->
+              <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+              
+              <!-- 3D Styled Book Cover Graphic -->
+              <div 
+                class="relative h-28 w-20 rounded-md shadow-2xl bg-gradient-to-br flex flex-col justify-between p-2.5 transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-1 border border-white/10"
+                [ngClass]="book.coverGradient + ' ' + book.coverTextColor"
+              >
+                <!-- Book spine shadow effect -->
+                <div class="absolute top-0 left-0 w-1 h-full bg-black/30 rounded-l-sm"></div>
+                
+                <!-- Cover elements -->
+                <div class="space-y-0.5">
+                  <span class="text-[6px] tracking-widest uppercase opacity-75 block font-bold">Classic Library</span>
+                  <h4 class="font-serif text-[8px] font-bold leading-tight line-clamp-2">{{ book.title }}</h4>
+                </div>
+                
+                <div class="space-y-1">
+                  <div class="h-px bg-current opacity-30"></div>
+                  <p class="text-[6px] font-medium tracking-wide truncate">{{ book.author }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Book details -->
+            <div class="p-6 flex-1 flex flex-col justify-between items-start space-y-4 text-left">
+              <div class="space-y-2 w-full">
+                <!-- Book category -->
+                <div class="flex items-center justify-between w-full">
+                  <span class="text-[10px] font-bold tracking-wider text-amber-850 bg-sepia-100 border border-sepia-200/60 px-2 py-0.5 rounded-md uppercase">
+                    {{ book.category }}
+                  </span>
+                  
+                  <!-- Rating and Reading Time -->
+                  <div class="flex items-center gap-3 text-xs text-stone-500 font-medium">
+                    <span class="flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5 text-amber-500 fill-amber-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.868 2.784c-.304-.793-1.432-.793-1.736 0l-1.43 3.738-3.957.348c-.843.074-1.18.114-.582.684l2.977 2.846-.867 4.022c-.18.84.81 1.488 1.488.948L10 13.348l3.633 2.022c.678.54 1.668-.107 1.488-.948l-.867-4.022 2.977-2.846c.598-.57.26-.61-.582-.684l-3.957-.348-1.43-3.738z" />
+                      </svg>
+                      {{ book.rating }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {{ book.readTime }}
+                    </span>
+                  </div>
+                </div>
+
+                <h3 class="font-sans text-lg font-bold text-stone-950 group-hover:text-amber-800 transition-colors">
+                  {{ book.title }}
+                </h3>
+                <p class="font-sans text-xs text-stone-500">By {{ book.author }}</p>
+                <p class="font-sans text-xs text-stone-600 leading-relaxed line-clamp-2">
+                  {{ book.description }}
+                </p>
+              </div>
+
+              <!-- CTA Button -->
+              <button 
+                routerLink="/login"
+                class="w-full mt-auto inline-flex justify-center items-center font-medium bg-stone-900 hover:bg-stone-800 text-stone-50 h-10 rounded-lg text-sm transition-all"
+              >
+                Read Book Now
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="py-20 relative bg-amber-950 text-amber-50 text-center overflow-hidden">
+    <!-- Decorative element -->
+    <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 relative space-y-6">
+      <h2 class="font-sans text-3xl sm:text-4xl font-bold tracking-tight">
+        Ready for a pure reading experience?
+      </h2>
+      <p class="font-sans text-base text-amber-200/80 max-w-2xl mx-auto leading-relaxed">
+        Join students, writers, and active learners who use Readivo to study deep texts, take structured notes, and eliminate digital visual fatigue.
+      </p>
+      <div class="pt-2">
+        <button 
+          routerLink="/register"
+          class="inline-flex justify-center items-center font-bold bg-white text-amber-950 hover:bg-amber-100 px-8 h-12 rounded-xl shadow-lg transition-all"
+        >
+          Create Your Free Library
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-stone-950 text-stone-400 py-12 border-t border-stone-900">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-2.5">
+      <div class="flex h-8 w-8 items-center justify-center rounded bg-white/10">
+        <img src="images/logo.svg" class="h-4.5 w-4.5 invert" alt="Readivo Logo" />
+      </div>
+      <span class="text-base font-bold text-white tracking-tight">Readivo</span>
+    </div>
+    
+    <p class="text-xs text-stone-500">
+      &copy; 2026 Readivo. Engineered for frictionless reading and distraction-free learning. All rights reserved.
+    </p>
+
+    <div class="flex gap-5 text-xs font-medium">
+      <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+      <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+      <a href="https://github.com" target="_blank" rel="noopener" class="hover:text-white transition-colors">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+

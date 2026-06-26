@@ -1,0 +1,161 @@
+<div class="relative min-h-screen flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 bg-stone-50 overflow-hidden select-none">
+  <!-- Warm aesthetic decorative background elements -->
+  <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-sepia-100/60 blur-3xl -z-10"></div>
+  <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-amber-100/40 blur-3xl -z-10"></div>
+
+  <!-- Centered Login Card -->
+  <div class="w-full max-w-md bg-white border border-stone-200/60 shadow-xl rounded-2xl p-8 sm:p-10 relative z-10">
+    
+    <!-- Header with logo and back home -->
+    <div class="flex flex-col items-center mb-8 text-center">
+      <a routerLink="/" class="flex items-center gap-2 mb-4 group">
+        <div class="relative flex h-10 w-10 items-center justify-center rounded-xl bg-stone-900 shadow transition-transform group-hover:scale-105">
+          <img src="images/logo.svg" class="h-5.5 w-5.5 invert" alt="Readivo Logo" />
+        </div>
+      </a>
+      <h2 class="font-sans text-2xl sm:text-3xl font-bold tracking-tight text-stone-950">Welcome back</h2>
+      <p class="font-sans text-xs text-stone-500 mt-2 max-w-xs leading-relaxed">
+        Access your distraction-free digital reading workspace and resume your learning journey.
+      </p>
+    </div>
+
+    <!-- Error Message Banner -->
+    @if (errorMessage()) {
+      <div class="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-750 font-semibold flex items-center gap-2 animate-fadeIn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-rose-600 shrink-0">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+        </svg>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Login Form -->
+    <form (submit)="onSubmit($event)" class="space-y-5">
+      <!-- Email Address Input -->
+      <div class="space-y-1.5">
+        <label for="email" class="text-xs font-bold text-stone-700 uppercase tracking-wider">Email Address</label>
+        <div class="relative rounded-xl shadow-sm">
+          <input 
+            type="email" 
+            id="email" 
+            name="email"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+            [disabled]="isLoading()"
+            placeholder="reader@readivo.com" 
+            class="w-full h-11 px-4 rounded-xl border border-stone-250 text-sm focus:outline-none focus:border-amber-800 focus:ring-1 focus:ring-amber-800 bg-stone-50/50 disabled:opacity-65 disabled:cursor-not-allowed transition-all"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between items-center">
+          <label for="password" class="text-xs font-bold text-stone-700 uppercase tracking-wider">Password</label>
+          <a routerLink="/login" class="text-[10px] font-bold text-amber-800 hover:underline">Forgot password?</a>
+        </div>
+        <div class="relative rounded-xl shadow-sm">
+          <input 
+            [type]="showPassword() ? 'text' : 'password'" 
+            id="password" 
+            name="password"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            [disabled]="isLoading()"
+            placeholder="••••••••" 
+            class="w-full h-11 pl-4 pr-11 rounded-xl border border-stone-250 text-sm focus:outline-none focus:border-amber-800 focus:ring-1 focus:ring-amber-800 bg-stone-50/50 disabled:opacity-65 disabled:cursor-not-allowed transition-all"
+            required
+          />
+          <!-- Show/Hide Password button toggle -->
+          <button 
+            type="button" 
+            (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-stone-700 transition-colors"
+          >
+            @if (showPassword()) {
+              <!-- Eye open SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4.5 h-4.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.815 7.815L21 21m-2.778-2.778l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+              </svg>
+            } @else {
+              <!-- Eye closed SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4.5 h-4.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember me & Submit -->
+      <button 
+        type="submit" 
+        [disabled]="isLoading()"
+        class="w-full h-11 bg-amber-800 hover:bg-amber-900 text-amber-50 text-sm font-bold rounded-xl shadow-md shadow-amber-900/10 hover:shadow-lg disabled:opacity-75 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 mt-3"
+      >
+        @if (isLoading()) {
+          <!-- Spinner -->
+          <svg class="animate-spin h-4 w-4 text-amber-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Verifying Credentials...
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+
+    <!-- Social Sign In divider -->
+    <div class="relative my-6">
+      <div class="absolute inset-0 flex items-center" aria-hidden="true">
+        <div class="w-full border-t border-stone-200"></div>
+      </div>
+      <div class="relative flex justify-center text-xs uppercase font-bold tracking-wider">
+        <span class="bg-white px-3 text-stone-400">Or continue with</span>
+      </div>
+    </div>
+
+    <!-- Social buttons -->
+    <div class="grid grid-cols-2 gap-3">
+      <button 
+        type="button" 
+        (click)="email.set('google@readivo.com'); password.set('googledemo')"
+        class="inline-flex justify-center items-center h-10 border border-stone-200 rounded-xl bg-white text-stone-700 text-xs font-semibold hover:bg-stone-50 shadow-sm transition-colors"
+      >
+        <!-- Google Mock -->
+        <span class="mr-2 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-[8px] font-bold text-white">G</span>
+        Google
+      </button>
+      <button 
+        type="button" 
+        (click)="email.set('github@readivo.com'); password.set('githubdemo')"
+        class="inline-flex justify-center items-center h-10 border border-stone-200 rounded-xl bg-white text-stone-700 text-xs font-semibold hover:bg-stone-50 shadow-sm transition-colors"
+      >
+        <!-- GitHub Mock -->
+        <span class="mr-2 h-4 w-4 bg-stone-900 rounded-full flex items-center justify-center text-[8px] font-bold text-white">G</span>
+        GitHub
+      </button>
+    </div>
+
+    <!-- Footer links -->
+    <div class="mt-8 text-center text-xs text-stone-500 border-t border-stone-100 pt-5">
+      New to Readivo? 
+      <a routerLink="/register" class="font-bold text-amber-800 hover:underline">Create an account</a>
+    </div>
+
+  </div>
+
+  <!-- Simple navigation back button -->
+  <a 
+    routerLink="/" 
+    class="mt-6 text-xs text-stone-500 hover:text-stone-800 flex items-center gap-1 transition-colors"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+      <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
+    </svg>
+    Return to Landing Page
+  </a>
+</div>
