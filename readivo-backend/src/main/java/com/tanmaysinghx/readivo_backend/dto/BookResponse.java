@@ -23,6 +23,7 @@ public class BookResponse {
     private String readTime;
     private String coverGradient;
     private String coverTextColor;
+    private String fileUrl;
     private List<Chapter> chapters;
 
     // User-specific states

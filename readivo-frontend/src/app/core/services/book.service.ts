@@ -1,5 +1,6 @@
 import { Injectable, signal, effect } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface Highlight {
@@ -20,10 +21,11 @@ export interface Book {
   readTime: string;
   coverGradient: string;
   coverTextColor: string;
-  
+  fileUrl?: string;
+
   // Immersive content for reading
   chapters: { title: string; paragraphs: string[] }[];
-  
+
   // User specific progress & annotations
   progress: number; // Percentage (0 - 100)
   highlights: Highlight[];
@@ -69,10 +71,15 @@ export class BookService {
     return this.books().find(b => b.id === id);
   }
 
+  // Fetch a single book directly from the backend (for deep-linking and refreshes)
+  public fetchBookFromBackend(id: string): Observable<Book> {
+    return this.http.get<Book>(`http://localhost:8080/api/books/${id}`);
+  }
+
   // Update a book's reading progress percentage
   public updateProgress(id: string, progressPercentage: number): void {
     const validatedProgress = Math.min(100, Math.max(0, Math.round(progressPercentage)));
-    
+
     // Optimistic UI Update: update the local state immediately
     const currentBooks = this.books();
     const updatedBooks = currentBooks.map(b => {
@@ -217,7 +224,7 @@ export class BookService {
     // Optimistic UI Update
     this.books.set(this.books().map(b => {
       if (b.id === bookId) {
-        const updatedHighlights = b.highlights.map(h => 
+        const updatedHighlights = b.highlights.map(h =>
           h.id === highlightId ? { ...h, note: note.trim() || undefined } : h
         );
         return { ...b, highlights: updatedHighlights };
@@ -237,7 +244,7 @@ export class BookService {
   }
 
   // Add a newly created book to the system catalog (admin simulation)
-  public addCustomBook(bookData: Omit<Book, 'progress' | 'highlights' | 'inShelf'>): void {
+  public addCustomBook(bookData: Omit<Book, 'progress' | 'highlights' | 'inShelf'>, callback?: () => void): void {
     this.http.post<any>('http://localhost:8080/api/books', bookData).subscribe({
       next: (createdBook) => {
         const newBook: Book = {
@@ -247,10 +254,22 @@ export class BookService {
           inShelf: false
         };
         this.books.set([...this.books(), newBook]);
+        if (callback) callback();
       },
       error: (err) => {
         console.error('Failed to save custom book to backend', err);
       }
+    });
+  }
+
+  // Upload a book file (PDF/TXT) to the backend with progress reporting
+  public uploadBookFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<any>('http://localhost:8080/api/books/upload', formData, {
+      reportProgress: true,
+      observe: 'events'
     });
   }
 }

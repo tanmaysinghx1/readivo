@@ -53,14 +53,28 @@ export class ReaderComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // 1. Try to find the book in the local loaded cache first
     const foundBook = this.bookService.getBookById(bookId);
-    if (!foundBook) {
-      this.router.navigate(['/library']).catch(err => console.error(err));
-      return;
+    if (foundBook) {
+      this.book.set(foundBook);
+      this.initializeReader();
+    } else {
+      // 2. If not found in cache (e.g. page refresh), fetch it directly from the backend API
+      this.bookService.fetchBookFromBackend(bookId).subscribe({
+        next: (backendBook: Book) => {
+          this.book.set(backendBook);
+          this.initializeReader();
+        },
+        error: (err: any) => {
+          console.error('Failed to load book from backend', err);
+          this.toastService.error('Could not load the requested book.');
+          this.router.navigate(['/library']).catch(routeErr => console.error(routeErr));
+        }
+      });
     }
+  }
 
-    this.book.set(foundBook);
-    
+  private initializeReader(): void {
     // Auto-hide header after 3 seconds on load
     this.resetHeaderTimeout();
 

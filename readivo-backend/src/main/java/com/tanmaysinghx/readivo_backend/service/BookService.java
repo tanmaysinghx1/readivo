@@ -68,6 +68,7 @@ public class BookService {
                     .readTime(b.getReadTime())
                     .coverGradient(b.getCoverGradient())
                     .coverTextColor(b.getCoverTextColor())
+                    .fileUrl(b.getFileUrl())
                     .chapters(b.getChapters())
                     .progress(progressPercent)
                     .inShelf(inShelf)
@@ -103,6 +104,7 @@ public class BookService {
                     .readTime(b.getReadTime())
                     .coverGradient(b.getCoverGradient())
                     .coverTextColor(b.getCoverTextColor())
+                    .fileUrl(b.getFileUrl())
                     .chapters(b.getChapters())
                     .progress(progressPercent)
                     .inShelf(inShelf)
@@ -198,6 +200,7 @@ public class BookService {
                 "3h 40m",
                 "from-amber-700 via-amber-800 to-stone-900",
                 "text-amber-100",
+                null,
                 new ArrayList<>()
         );
         Chapter medChapter = new Chapter();
@@ -224,6 +227,7 @@ public class BookService {
                 "4h 15m",
                 "from-indigo-900 via-slate-900 to-stone-950",
                 "text-indigo-200",
+                null,
                 new ArrayList<>()
         );
         Chapter gatsbyChapter = new Chapter();
@@ -250,6 +254,7 @@ public class BookService {
                 "6h 10m",
                 "from-purple-900 via-violet-950 to-slate-950",
                 "text-purple-200",
+                null,
                 new ArrayList<>()
         );
         Chapter hawkingChapter = new Chapter();
@@ -276,6 +281,7 @@ public class BookService {
                 "5h 20m",
                 "from-rose-900 via-red-950 to-neutral-950",
                 "text-rose-200",
+                null,
                 new ArrayList<>()
         );
         Chapter nietzscheChapter = new Chapter();
@@ -302,6 +308,7 @@ public class BookService {
                 "2h 45m",
                 "from-teal-800 via-emerald-950 to-stone-900",
                 "text-teal-100",
+                null,
                 new ArrayList<>()
         );
         Chapter aliceChapter = new Chapter();
@@ -328,6 +335,7 @@ public class BookService {
                 "1h 50m",
                 "from-red-800 via-amber-950 to-stone-950",
                 "text-amber-200",
+                null,
                 new ArrayList<>()
         );
         Chapter artChapter = new Chapter();
