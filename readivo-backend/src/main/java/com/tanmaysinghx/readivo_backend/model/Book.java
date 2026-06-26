@@ -47,6 +47,9 @@ public class Book {
     @Column(name = "cover_text_color", nullable = false)
     private String coverTextColor;
 
+    @Column(name = "file_url", length = 512)
+    private String fileUrl;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     @OrderBy("id ASC")
